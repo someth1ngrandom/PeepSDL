@@ -2,7 +2,7 @@
 High level SDL wrappers for C++.
 
 ## Usage
-Check out the [samples](https://github.com/someth1ngrandom/PeepSDL/samples) for usage instructions.
+Check out the [samples](https://github.com/someth1ngrandom/PeepSDL/tree/trunk/samples) for usage instructions.
 
 ## How to compile
 You will need:
