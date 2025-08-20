@@ -1,6 +1,9 @@
 # PeepSDL
 High level SDL wrappers for C++.
 
+## Usage
+Check out the [samples](https://github.com/someth1ngrandom/PeepSDL/samples) for usage instructions.
+
 ## How to compile
 You will need:
 - CMake (version 3.16 or higher)
