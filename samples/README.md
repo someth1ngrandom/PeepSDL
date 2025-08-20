@@ -9,6 +9,7 @@ You will need:
 - The PeepSDL library and its headers (the examples link it statically)
 - Being a human
 - Having consciousness and intelligence
+
 *The samples were made for Linux, if you don't use Linux modify them for whichever operating system you use*
 
 <br>
