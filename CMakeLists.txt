@@ -14,7 +14,6 @@ add_library(PeepSDL STATIC
     src/class/Transform.cpp
     src/class/Texture.cpp
     src/class/Random.cpp
-    src/class/Gamestate.cpp
     src/class/Text.cpp
     src/class/Audio.cpp
 )
