@@ -11,6 +11,7 @@
 #include "class/Transform.h"
 #include <cassert>
 #include <vector>
+#include <optional>
 #include <stdexcept>
 
 namespace Peep {
@@ -39,7 +40,8 @@ using GamepadMap = std::unordered_map<int, SDL_Gamepad*>;
 class Window
 {
 public:
-    explicit Window(std::string_view title, int *width, int *height, SDL_WindowFlags flags, GamepadMap &gamepads);
+    explicit Window(std::string_view title, int fullscreenLevel = 0);
+    explicit Window(std::string_view title, int width, int height, SDL_WindowFlags flags = 0);
     ~Window();
 
     Window(const Window&) = delete;
