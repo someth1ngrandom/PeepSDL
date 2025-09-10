@@ -18,14 +18,19 @@ void Text::GenerateTexture(Window &window) {
 
     DestroyTexture(); // destroy old texture
     
-    lastFont = window.GetTextFont();
+    lastFont = ::std::shared_ptr<::TTF_Font>(
+        TTF_OpenFont(path.c_str(), size),
+        [](::TTF_Font* f) {
+            if (f) ::TTF_CloseFont(f);
+        }
+    );
 
     // actually make the texture
     SDL_Surface* surface;
     if (isWrapped) {
-        surface = TTF_RenderText_Blended_Wrapped((isHuge) ? window.GetTextFontHuge().get() : window.GetTextFont().get(), text.c_str(), 0, { color.r, color.g, color.b, color.a }, wrapWidth);
+        surface = TTF_RenderText_Blended_Wrapped(lastFont.get(), text.c_str(), 0, { color.r, color.g, color.b, color.a }, wrapWidth);
     } else {
-        surface = TTF_RenderText_Blended((isHuge) ? window.GetTextFontHuge().get() : window.GetTextFont().get(), text.c_str(), 0, { color.r, color.g, color.b, color.a });
+        surface = TTF_RenderText_Blended(lastFont.get(), text.c_str(), 0, { color.r, color.g, color.b, color.a });
     }
     if (!surface) {
         throw std::runtime_error(SDL_GetError());
@@ -69,7 +74,7 @@ void Text::MiddleToArea(const Transform &c, Window &window) {
 
 void Text::Draw(Window &window) {
     if (dontBother) return;
-    if (!textTexture || window.GetTextFont() != lastFont) {
+    if (!textTexture) {
         GenerateTexture(window);
     }
 

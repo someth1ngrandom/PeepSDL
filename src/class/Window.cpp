@@ -77,16 +77,7 @@ Window::Window(std::string_view title, int width, int height, SDL_WindowFlags fl
     perfFreq = SDL_GetPerformanceFrequency();
 }
 
-Window::~Window() {/* smart ptrs do this automatically, unlike retarded ptrs
-    if (textFont) {
-        printf("Ambatuclose %p\n", textFont);
-        TTF_CloseFont(textFont);
-        textFont = nullptr;
-    }
-    if (textFontHuge) {
-        TTF_CloseFont(textFontHuge);
-        textFontHuge = nullptr;
-    }*/
+Window::~Window() {
     if (mixInited) {
         Mix_CloseAudio();
     }
@@ -100,29 +91,11 @@ Window::~Window() {/* smart ptrs do this automatically, unlike retarded ptrs
     }
 }
 
-void Window::InitTTF(std::string_view fontPath) {
+void Window::InitTTF() {
     if (!TTF_Init()) {
         throw std::runtime_error(SDL_GetError());
     }
     ttfInited = true;
-
-    //textFont = TTF_OpenFont("assets/fonts/Main.ttf", 32); // hardcoded font because fuck you, thats why
-    textFont = ::std::shared_ptr<::TTF_Font>(
-        TTF_OpenFont(fontPath.data(), 32),
-        [](::TTF_Font* f) {
-            if (f) ::TTF_CloseFont(f);
-        }
-    );
-    textFontHuge = ::std::shared_ptr<::TTF_Font>(
-        TTF_OpenFont(fontPath.data(), 128),
-        [](::TTF_Font* f) {
-            if (f) ::TTF_CloseFont(f);
-        }
-    );
-
-    if (!textFont || !textFontHuge) {
-        throw std::runtime_error(SDL_GetError());
-    }
 }
 
 void Window::InitMix(MIX_InitFlags flags/* = MIX_INIT_OGG*/) {
