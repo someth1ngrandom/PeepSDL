@@ -16,6 +16,8 @@ public:
     Transform transform;
     Color color;
     std::string text;
+    std::string path;
+    int size;
     bool isMiddle = false;
     bool isCentered = false;
     bool isWrapped = false;
@@ -24,8 +26,8 @@ public:
 
     int wrapWidth = 200;
 
-    Text(Transform trns, Color col, std::string txt, bool huge = false, bool wrp = false, int wrw = 200)
-        : transform(trns), color(col), text(txt), isHuge(huge), isWrapped(wrp), wrapWidth(wrw) {};
+    Text(Vector2 trns, Color col, std::string txt, std::string pth, int siz = 32, bool huge = false, bool wrp = false, int wrw = 200)
+        : transform({ trns.x, trns.y, 0, 0 }), color(col), text(txt), path(pth), size(siz), isHuge(huge), isWrapped(wrp), wrapWidth(wrw) {};
 
     ~Text() {
         DestroyTexture();
@@ -37,8 +39,8 @@ public:
     void MiddleToArea(const Transform &c, Window &window);
     void SetCentered(bool c) { isCentered = c; }
 private:
-    ::SDL_Texture* textTexture;
-    ::std::shared_ptr<::TTF_Font> lastFont;
+    ::SDL_Texture* textTexture = nullptr;
+    ::std::shared_ptr<::TTF_Font> lastFont = nullptr;
 
     void GenerateTexture(Window &window);
     void DestroyTexture();

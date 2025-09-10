@@ -51,7 +51,7 @@ public:
     void Present();
     void SetDrawColor(Color c);
 
-    void InitTTF(std::string_view fontPath);
+    void InitTTF();
     void InitMix(MIX_InitFlags flags = MIX_INIT_OGG);
 
     void GracefulClose() { running = false; };
@@ -146,12 +146,6 @@ public:
 
     bool GetTTFInitStatus() const noexcept { return ttfInited; }; 
     bool GetMixInitStatus() const noexcept { return mixInited; }; 
-    std::shared_ptr<::TTF_Font> GetTextFont() const noexcept { return textFont; };
-    std::shared_ptr<::TTF_Font> GetTextFontHuge() const noexcept { return textFontHuge; };
-    void ShutdownFonts() {
-        textFont.reset();
-        textFontHuge.reset();
-    }
     
     void TriggerLoadError();
     
@@ -188,9 +182,6 @@ private:
     std::function<void(::SDL_Event)> eventCallback;
     std::function<void()> logicLoop;
     std::function<void()> drawLoop;
-
-    std::shared_ptr<::TTF_Font> textFont = nullptr;
-    std::shared_ptr<::TTF_Font> textFontHuge = nullptr;
 
     bool ttfInited = false;
     bool mixInited = false;
