@@ -58,7 +58,31 @@ jobs:
         git clone https://github.com/libsdl-org/SDL -b main SDL3
         cd SDL3
         cmake -B build -DCMAKE_BUILD_TYPE=Release
-        cmake --build build
+        cmake --build build --parallel
+        sudo cmake --install build
+
+    - name: Get SDL_ttf
+      run: |
+        git clone https://github.com/libsdl-org/SDL_ttf -b main SDL3_ttf
+        cd SDL3_ttf
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --parallel
+        sudo cmake --install build
+    
+    - name: Get SDL_mixer
+      run: |
+        git clone https://github.com/libsdl-org/SDL_mixer -b main SDL3_mixer
+        cd SDL3_mixer
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --parallel
+        sudo cmake --install build
+
+    - name: Get SDL_image
+      run: |
+        git clone https://github.com/libsdl-org/SDL_image -b main SDL3_image
+        cd SDL3_image
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --parallel
         sudo cmake --install build
 
     - name: Set reusable strings
@@ -80,7 +104,7 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
