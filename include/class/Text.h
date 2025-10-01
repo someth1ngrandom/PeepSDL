@@ -21,13 +21,12 @@ public:
     bool isMiddle = false;
     bool isCentered = false;
     bool isWrapped = false;
-    bool isHuge = false;
     bool dontBother = false;
 
     int wrapWidth = 200;
 
-    Text(Vector2 trns, Color col, std::string txt, std::string pth, int siz = 32, bool huge = false, bool wrp = false, int wrw = 200)
-        : transform({ trns.x, trns.y, 0, 0 }), color(col), text(txt), path(pth), size(siz), isHuge(huge), isWrapped(wrp), wrapWidth(wrw) {};
+    Text(Vector2 trns, Color col, std::string txt, std::string pth, int siz = 32, bool wrp = false, int wrw = 200)
+        : transform({ trns.x, trns.y, 0, 0 }), color(col), text(txt), path(pth), size(siz), isWrapped(wrp), wrapWidth(wrw) {};
 
     ~Text() {
         DestroyTexture();

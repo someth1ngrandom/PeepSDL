@@ -13,6 +13,6 @@ int main() {
 
     window.BeginLoop(Peep::Color::hex(0x2A2A2A)); // start our empty loops and fill the background with a dark grey color
 
-    SDL_Quit();
+    SDL_Quit(); // quit manually because we can't trust the stack to do it for us
     return 0;
 }

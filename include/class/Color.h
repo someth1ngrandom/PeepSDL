@@ -16,6 +16,9 @@ struct Color {
 
     static Color darken(const Color &col, float factor);
     static Color lighten(const Color &col, float factor);
+
+    static Color white();
+    static Color black();
     
     friend std::ostream &operator<<(std::ostream &os, const Color &c);
     bool operator==(const Color &other) const;
