@@ -13,29 +13,11 @@
 #include <vector>
 #include <optional>
 #include <stdexcept>
+#include "Exceptions.h"
 
 namespace Peep {
 
-template <typename Tag>
-class TaggedException : public std::runtime_error {
-public:
-    explicit TaggedException(const std::string &msg)
-        : std::runtime_error(msg) {}
-};
-
-struct KeyErrTag{};
-struct EventErrTag{};
-struct LogicErrTag{};
-struct DrawErrTag{};
-
-using KeyCallbackException = TaggedException<KeyErrTag>;
-using EventCallbackException = TaggedException<EventErrTag>;
-using LogicLoopException = TaggedException<LogicErrTag>;
-using DrawLoopException = TaggedException<DrawErrTag>;
-
 struct Gamestate;
-
-using GamepadMap = std::unordered_map<int, SDL_Gamepad*>;
 
 class Window
 {

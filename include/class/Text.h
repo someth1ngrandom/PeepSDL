@@ -25,13 +25,12 @@ public:
 
     int wrapWidth = 200;
 
-    Text(Vector2 trns, Color col, std::string txt, std::string pth, int siz = 32, bool wrp = false, int wrw = 200)
-        : transform({ trns.x, trns.y, 0, 0 }), color(col), text(txt), path(pth), size(siz), isWrapped(wrp), wrapWidth(wrw) {};
+    Text(Vector2 trns, Color col, std::string txt, std::string pth, int siz = 32, bool wrp = false, int wrw = 200);
+    
+    Text(const Text&) = delete;
+    Text& operator=(const Text&) = delete;
 
-    ~Text() {
-        DestroyTexture();
-        lastFont = nullptr;
-    }
+    ~Text();
 
     void Draw(Window &window);
     void SetMiddle(bool c) { isMiddle = c; }
@@ -39,7 +38,7 @@ public:
     void SetCentered(bool c) { isCentered = c; }
 private:
     ::SDL_Texture* textTexture = nullptr;
-    ::std::shared_ptr<::TTF_Font> lastFont = nullptr;
+    ::TTF_Font* lastFont = nullptr;
 
     void GenerateTexture(Window &window);
     void DestroyTexture();

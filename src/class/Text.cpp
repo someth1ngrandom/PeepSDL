@@ -2,8 +2,20 @@
 #include "class/Window.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include "Exceptions.h"
+#include "class/Color.h"
+#include "class/Transform.h"
 
 namespace Peep {
+
+Text::Text(Vector2 trns, Color col, std::string txt, std::string pth, int siz, bool wrp, int wrw)
+        : transform({ trns.x, trns.y, 0, 0 }), color(col), text(txt), path(pth), size(siz), isWrapped(wrp), wrapWidth(wrw)
+{
+    lastFont = ::TTF_OpenFont(path.c_str(), size);
+    if (!lastFont) {
+        throw FontCreationException(SDL_GetError());
+    }
+}
 
 void Text::DestroyTexture() {
     if (textTexture) {
@@ -17,20 +29,13 @@ void Text::GenerateTexture(Window &window) {
     if (dontBother) return;
 
     DestroyTexture(); // destroy old texture
-    
-    lastFont = ::std::shared_ptr<::TTF_Font>(
-        TTF_OpenFont(path.c_str(), size),
-        [](::TTF_Font* f) {
-            if (f) ::TTF_CloseFont(f);
-        }
-    );
 
-    // actually make the texture
+    // make the texture
     SDL_Surface* surface;
     if (isWrapped) {
-        surface = TTF_RenderText_Blended_Wrapped(lastFont.get(), text.c_str(), 0, { color.r, color.g, color.b, color.a }, wrapWidth);
+        surface = TTF_RenderText_Blended_Wrapped(lastFont, text.c_str(), 0, { color.r, color.g, color.b, color.a }, wrapWidth);
     } else {
-        surface = TTF_RenderText_Blended(lastFont.get(), text.c_str(), 0, { color.r, color.g, color.b, color.a });
+        surface = TTF_RenderText_Blended(lastFont, text.c_str(), 0, { color.r, color.g, color.b, color.a });
     }
     if (!surface) {
         throw std::runtime_error(SDL_GetError());
@@ -101,6 +106,14 @@ void Text::Draw(Window &window) {
     }
 
     SDL_RenderTexture(window.GetRenderer(), textTexture, nullptr, &drawRect);
+}
+
+Text::~Text() {
+    DestroyTexture();
+    if (lastFont && TTF_WasInit() > 0) {
+        TTF_CloseFont(lastFont);
+        lastFont = nullptr;
+    }
 }
 
 }
