@@ -51,7 +51,7 @@ jobs:
         libgbm-dev libegl1-mesa-dev libgles2-mesa-dev \
         libudev-dev libasound2-dev libpulse-dev libpipewire-0.3-dev \
         libdbus-1-dev libibus-1.0-dev fcitx-libs-dev libfreetype6-dev libharfbuzz-dev \
-        libpng-dev libjpeg-dev libwebp-dev libmodplug-dev libfluidsynth-dev
+        libpng-dev libjpeg-dev libwebp-dev libmodplug-dev libfluidsynth-dev libogg-dev libvorbis-dev
 
 
     - name: Get SDL
