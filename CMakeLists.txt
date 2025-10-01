@@ -20,12 +20,11 @@ add_library(PeepSDL STATIC
 
 # when using this lib link these or you die
 
-# find_package(SDL3 REQUIRED)
-# find_package(SDL3_ttf REQUIRED)
-# find_package(SDL3_mixer REQUIRED)
-# find_package(SDL3_image REQUIRED)
-
-# target_link_libraries(YOURTARGET PRIVATE SDL3::SDL3-shared SDL3_ttf::SDL3_ttf SDL3_mixer::SDL3_mixer SDL3_image::SDL3_image)
+find_package(SDL3 REQUIRED)
+find_package(SDL3_ttf REQUIRED)
+find_package(SDL3_mixer REQUIRED)
+find_package(SDL3_image REQUIRED)
+target_link_libraries(PeepSDL PRIVATE SDL3::SDL3-shared SDL3_ttf::SDL3_ttf SDL3_mixer::SDL3_mixer SDL3_image::SDL3_image)
 
 target_include_directories(PeepSDL PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
