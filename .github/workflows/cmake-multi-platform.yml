@@ -42,6 +42,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Get SDL
+      run: |
+        git clone https://github.com/libsdl-org/SDL -b main SDL3
+        cd SDL3
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build
+        sudo cmake --install build
+
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
