@@ -56,3 +56,4 @@ CMakeUserPresets.json
 *.7z
 
 build/
+.github/
