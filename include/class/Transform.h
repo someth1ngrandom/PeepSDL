@@ -65,6 +65,8 @@ public:
     void SetScaleW(float w);
     void SetScaleH(float h);
 
+    void ApplyOffset(const Transform &offset);
+
     friend std::ostream& operator<<(std::ostream& os, const Transform& t);
     std::string ToString() const;
 };

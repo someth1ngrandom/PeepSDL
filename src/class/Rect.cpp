@@ -13,10 +13,14 @@ std::ostream &operator<<(std::ostream &os, const Rect &r) {
     "}";
 }
 
-void Rect::Draw(Window &window, int outlineThickness, int strokeThickness) const {
+void Rect::Draw(Window &window, int outlineThickness, int strokeThickness, std::optional<Transform> offset) const {
     if (filled) {
+        Transform tfToUse = transform;
+        if (offset.has_value()) {
+            tfToUse.ApplyOffset(offset.value());
+        }
         window.SetDrawColor(color);
-        SDL_RenderFillRect(window.GetRenderer(), &transform.GetRect());
+        SDL_RenderFillRect(window.GetRenderer(), &tfToUse.GetRect());
     }
     
     if (strokeThickness > 0) {
@@ -26,14 +30,29 @@ void Rect::Draw(Window &window, int outlineThickness, int strokeThickness) const
             transform.GetScl().w + strokeThickness * 2,
             transform.GetScl().h + strokeThickness * 2
         };
+        if (offset.has_value()) {
+            const auto &o = *offset;
+            r = {
+                transform.GetPos().x - strokeThickness + o.GetPos().x,
+                transform.GetPos().y - strokeThickness + o.GetPos().y,
+                transform.GetScl().w + strokeThickness * 2 + o.GetScl().w,
+                transform.GetScl().h + strokeThickness * 2 + o.GetScl().h
+            };
+        }
         
         // draw stroke
         window.SetDrawColor(Color::lighten(color, 0.3));
         SDL_RenderFillRect(window.GetRenderer(), &r);
 
+        Transform t = transform;
+        if (offset.has_value()) {
+            t.ApplyOffset(offset.value());
+        }
+
         window.SetDrawColor(color);
-        SDL_RenderFillRect(window.GetRenderer(), &transform.GetRect());
+        SDL_RenderFillRect(window.GetRenderer(), &t.GetRect());
     } else if (!filled) {
+        const auto &o = *offset;
         for (int i = 0; i < outlineThickness; ++i) {
             SDL_FRect r = {
                 transform.GetPos().x - i,
@@ -41,6 +60,15 @@ void Rect::Draw(Window &window, int outlineThickness, int strokeThickness) const
                 transform.GetScl().w + i * 2,
                 transform.GetScl().h + i * 2
             };
+            if (offset.has_value()) {
+                const auto &o = *offset;
+                r = {
+                    transform.GetPos().x - i + o.GetPos().x,
+                    transform.GetPos().y - i + o.GetPos().y,
+                    transform.GetScl().w + i * 2 + o.GetScl().w,
+                    transform.GetScl().h + i * 2 + o.GetScl().h
+                };
+            }
 
             window.SetDrawColor(color);
             SDL_RenderRect(window.GetRenderer(), &r);

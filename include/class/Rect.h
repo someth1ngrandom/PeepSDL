@@ -1,6 +1,7 @@
 #pragma once
 #include "class/Color.h"
 #include "class/Transform.h"
+#include <optional>
 
 namespace Peep {
 
@@ -17,7 +18,7 @@ public:
     Rect(Transform trns, Color col, bool fil = false)
         : transform(trns), color(col), filled(fil) {};
 
-    void Draw(Window &window, int outlineThickness = 1, int strokeThickness = -1) const;
+    void Draw(Window &window, int outlineThickness = 1, int strokeThickness = -1, std::optional<Transform> offset = std::nullopt) const;
     bool IsCollidingWithTransform(const Transform &other) const;
 
     float GetMiddleX(const Scale &windowScale) const;

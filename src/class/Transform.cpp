@@ -123,6 +123,14 @@ void Transform::SetScaleH(float h) {
     UpdateRect();
 }
 
+void Transform::ApplyOffset(const Transform &off) {
+    position_.x += off.GetPos().x;
+    position_.y += off.GetPos().y;
+    scale_.w += off.GetScl().w;
+    scale_.h += off.GetScl().h;
+    UpdateRect();
+}
+
 std::ostream& operator<<(std::ostream& os, const Transform& t) {
     return os << "Transform({" << std::endl <<
         "\tposition.x: " << t.GetPos().x << std::endl <<
