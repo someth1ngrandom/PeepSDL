@@ -63,8 +63,15 @@ int main() {
         270 + 32*2 // Y position
     }, Peep::Color::hex(0x0000FF /* green color */), "I am blue", kFontPath, 32);
 
+    // make a wrapped text
+    Peep::Text myWrappedText({ 400, 60 }, Peep::Color::white(), "This is some long text that should get wrapped automatically!", kFontPath, 32,
+    // wrap options
+    true, // enable wrapping
+    350 // the width one line needs to reach before getting wrapped
+    );
+
     window.SetLogicLoop([](){});   // define an empty logic loop
-    window.SetDrawLoop([&myRect, &myFilledRect, &window, &myText, &myHugeText, &myRedText, &myGreenText, &myBlueText /* capture local variables into lambda (important!!) */]() {
+    window.SetDrawLoop([&myRect, &myFilledRect, &window, &myText, &myHugeText, &myRedText, &myGreenText, &myBlueText, &myWrappedText /* capture local variables into lambda (important!!) */]() {
         // this is our draw loop, it is where we draw our objects
         myRect.Draw(window); // draw the rect using our window
         myFilledRect.Draw(window);
@@ -75,6 +82,8 @@ int main() {
         myRedText.Draw(window);
         myGreenText.Draw(window);
         myBlueText.Draw(window);
+
+        myWrappedText.Draw(window);
     });
 
     window.BeginLoop(Peep::Color::hex(0x2A2A2A)); // start our empty loops and fill the background with a dark grey color
