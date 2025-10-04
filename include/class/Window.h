@@ -64,6 +64,12 @@ public:
                     } catch (const std::exception &e) {
                         throw KeyCallbackException(e.what());
                     }
+                } else if (event.type == SDL_EVENT_KEY_UP) {
+                    try {
+                        if (keyUpCallback) keyUpCallback(event.key.key);
+                    } catch (const std::exception &e) {
+                        throw KeyCallbackException(e.what());
+                    }
                 }
 
                 try {
@@ -115,6 +121,10 @@ public:
         keyCallback = cb;
     }
 
+    void SetKeyUpCallback(std::function<void(SDL_Keycode)> cb) {
+        keyUpCallback = cb;
+    }
+
     void SetEventCallback(std::function<void(SDL_Event)> cb) {
         eventCallback = cb;
     }
@@ -161,6 +171,7 @@ private:
     int joystickCount;
 
     std::function<void(::SDL_Keycode)> keyCallback;
+    std::function<void(::SDL_Keycode)> keyUpCallback;
     std::function<void(::SDL_Event)> eventCallback;
     std::function<void()> logicLoop;
     std::function<void()> drawLoop;

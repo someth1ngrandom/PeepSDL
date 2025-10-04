@@ -77,7 +77,7 @@ void Text::MiddleToArea(const Transform &c, Window &window) {
     });
 }
 
-void Text::Draw(Window &window) {
+void Text::Draw(Window &window, std::optional<Transform> offset) {
     if (dontBother) return;
     if (!textTexture) {
         GenerateTexture(window);
@@ -85,27 +85,31 @@ void Text::Draw(Window &window) {
 
     const float textW = transform.GetScl().w;
     const float textH = transform.GetScl().h;
-    SDL_FRect drawRect;
+    Transform drawTrans;
 
     if (isMiddle) {
-        drawRect = {
+        drawTrans = Transform(
             (window.GetWindowSize().w - textW) / 2.0f,
             (window.GetWindowSize().h - textH) / 2.0f,
             textW,
             textH
-        };
+        );
     } else if (isCentered) {
-        drawRect = {
+        drawTrans = Transform(
             (window.GetWindowSize().w - textW) / 2.0f,
             transform.GetPos().y,
             textW,
             textH
-        };
+        );
     } else {
-        drawRect = transform.GetRect();
+        drawTrans = transform;
     }
 
-    SDL_RenderTexture(window.GetRenderer(), textTexture, nullptr, &drawRect);
+    if (offset.has_value()) {
+        drawTrans.ApplyOffset(*offset);
+    }
+
+    SDL_RenderTexture(window.GetRenderer(), textTexture, nullptr, &drawTrans.GetRect());
 }
 
 Text::~Text() {

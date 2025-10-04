@@ -3,6 +3,7 @@
 #include "class/Color.h"
 #include "class/Transform.h"
 #include <memory>
+#include <optional>
 
 class TTF_Font;
 
@@ -32,17 +33,17 @@ public:
 
     ~Text();
 
-    void Draw(Window &window);
+    void Draw(Window &window, std::optional<Transform> offset = std::nullopt);
     void SetMiddle(bool c) { isMiddle = c; }
     void MiddleToArea(const Transform &c, Window &window);
     void SetCentered(bool c) { isCentered = c; }
+    void SetText(const std::string &text, Window &window);
 private:
     ::SDL_Texture* textTexture = nullptr;
     ::TTF_Font* lastFont = nullptr;
 
     void GenerateTexture(Window &window);
     void DestroyTexture();
-    void SetText(const std::string &text, Window &window);
 };
 
 }
